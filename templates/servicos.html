@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +14,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        // Configure Tailwind to use the 'class' strategy for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
+        }
+        .prose h1 {
+            color: #1a202c;
         }
         .prose h2 {
             font-size: 1.5rem;
@@ -37,22 +49,60 @@
             color: #4a5568;
             line-height: 1.6;
         }
+        .prose a {
+            color: #0d9488; /* text-teal-600 */
+        }
+        .prose a:hover {
+            color: #0f766e; /* text-teal-700 */
+        }
+
+        /* Dark Mode Prose Styles */
+        .dark .prose h1,
+        .dark .prose h2,
+        .dark .prose h3 {
+            color: #e5e7eb; /* gray-200 */
+        }
+        .dark .prose p, 
+        .dark .prose ul,
+        .dark .prose li {
+            color: #9ca3af; /* gray-400 */
+        }
+        .dark .prose .lead {
+            color: #6b7280; /* gray-500 */
+        }
+        .dark .prose strong {
+            color: #f9fafb; /* gray-50 */
+        }
+        .dark .prose a {
+            color: #2dd4bf; /* teal-400 */
+        }
+        .dark .prose a:hover {
+            color: #5eead4; /* teal-300 */
+        }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300">
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800">
-                    Clinic<span class="text-teal-600">Soft</span>
+                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800 dark:text-white">
+                    Clinic<span class="text-teal-600 dark:text-teal-400">Soft</span>
                 </a>
-                <!-- Back to Home Link -->
-                <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500">
-                    &larr; Voltar para o Início
-                </a>
+                <div class="flex items-center space-x-4">
+                     <!-- Theme Toggle Button -->
+                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <!-- Back to Home Link -->
+                    <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300">
+                        &larr; Voltar para o Início
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -60,9 +110,9 @@
     <!-- Main Content -->
     <main class="py-12 sm:py-16">
         <div class="container mx-auto px-6">
-            <article class="prose lg:prose-xl max-w-4xl mx-auto bg-white p-8 sm:p-12 rounded-lg shadow-md">
+            <article class="prose lg:prose-xl max-w-4xl mx-auto bg-white dark:bg-gray-800 p-8 sm:p-12 rounded-lg shadow-md">
                 <h1>Termos de Serviço</h1>
-                <p class="lead text-gray-600">Última atualização: 2 de julho de 2025</p>
+                <p class="lead">Última atualização: 2 de julho de 2025</p>
                 
                 <p>Estes Termos de Serviço ("Termos") regem o seu acesso e uso da plataforma e serviços da ClinicSoft ("Serviços"). Por favor, leia estes Termos cuidadosamente antes de usar nossos Serviços.</p>
                 
@@ -99,9 +149,21 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 py-12 text-center">
-            <p>&copy; 2025 ClinicSoft. Todos os direitos reservados.</p>
+            <p class="text-gray-400">&copy; 2025 ClinicSoft. Todos os direitos reservados.</p>
         </div>
     </footer>
 
+    <script>
+        // Alpine.js component for theme management
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appTheme', () => ({
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    localStorage.setItem('darkMode', this.darkMode);
+                }
+            }))
+        });
+    </script>
 </body>
 </html>

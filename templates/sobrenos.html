@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,27 +14,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        // Configure Tailwind to use the 'class' strategy for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
         }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300">
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800">
-                    Clinic<span class="text-teal-600">Soft</span>
+                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800 dark:text-white">
+                    Clinic<span class="text-teal-600 dark:text-teal-400">Soft</span>
                 </a>
-                <!-- Back to Home Link -->
-                <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500">
-                    &larr; Voltar para o Início
-                </a>
+                <div class="flex items-center space-x-4">
+                     <!-- Theme Toggle Button -->
+                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <!-- Back to Home Link -->
+                    <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300">
+                        &larr; Voltar para o Início
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -42,26 +59,26 @@
     <!-- Main Content -->
     <main>
         <!-- About Us Section -->
-        <section id="about-us" class="py-20 bg-white">
+        <section id="about-us" class="py-20 bg-white dark:bg-gray-800">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800">Nossa Missão é Simplificar a Saúde</h2>
-                    <p class="text-lg text-gray-600 mt-4 max-w-3xl mx-auto">Somos apaixonados por tecnologia e saúde, e acreditamos que a combinação certa dos dois pode transformar a gestão de clínicas e consultórios.</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-gray-200">Nossa Missão é Simplificar a Saúde</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400 mt-4 max-w-3xl mx-auto">Somos apaixonados por tecnologia e saúde, e acreditamos que a combinação certa dos dois pode transformar a gestão de clínicas e consultórios.</p>
                 </div>
                 <div class="flex flex-col md:flex-row items-center gap-12">
                     <!-- Image -->
                     <div class="md:w-1/2">
-                        <img src="IMG_5746.jpg" alt="Equipe da ClinicSoft" class="rounded-xl shadow-lg w-full">
+                        <img src="https://placehold.co/600x400/14b8a6/ffffff?text=ClinicSoft+Team" alt="Equipe da ClinicSoft" class="rounded-xl shadow-lg w-full">
                     </div>
                     <!-- Text Content -->
                     <div class="md:w-1/2">
-                        <p class="text-gray-700 text-lg mb-6">
+                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-6">
                             A ClinicSoft nasceu da necessidade de médicos e gestores que buscavam uma solução completa e intuitiva para administrar suas clínicas. Nossa equipe é formada por especialistas em tecnologia e saúde, dedicados a criar ferramentas que realmente fazem a diferença no dia a dia dos profissionais.
                         </p>
-                        <p class="text-gray-700 text-lg mb-4">
+                        <p class="text-gray-700 dark:text-gray-300 text-lg mb-4">
                             Acreditamos que, ao otimizar a gestão, liberamos tempo para o que realmente importa: o cuidado e a atenção com o paciente. Estamos comprometidos com a inovação constante e um suporte ao cliente que entende suas necessidades.
                         </p>
-                         <div class="space-y-4">
+                         <div class="space-y-4 mt-6">
                             <div class="flex items-start">
                                 <div class="flex-shrink-0">
                                     <div class="flex items-center justify-center h-12 w-12 rounded-md bg-teal-500 text-white">
@@ -69,8 +86,8 @@
                                     </div>
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-lg leading-6 font-medium text-gray-900">Inovação</h4>
-                                    <p class="mt-2 text-base leading-6 text-gray-500">
+                                    <h4 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-200">Inovação</h4>
+                                    <p class="mt-2 text-base leading-6 text-gray-500 dark:text-gray-400">
                                         Buscamos constantemente as melhores tecnologias para oferecer uma plataforma moderna e eficiente.
                                     </p>
                                 </div>
@@ -82,8 +99,8 @@
                                     </div>
                                 </div>
                                 <div class="ml-4">
-                                    <h4 class="text-lg leading-6 font-medium text-gray-900">Foco no Cliente</h4>
-                                    <p class="mt-2 text-base leading-6 text-gray-500">
+                                    <h4 class="text-lg leading-6 font-medium text-gray-900 dark:text-gray-200">Foco no Cliente</h4>
+                                    <p class="mt-2 text-base leading-6 text-gray-500 dark:text-gray-400">
                                         Nosso sucesso é medido pela satisfação dos nossos clientes. Oferecemos suporte humanizado e ágil.
                                     </p>
                                 </div>
@@ -135,5 +152,17 @@
         </div>
     </footer>
 
+    <script>
+        // Alpine.js component for theme management
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appTheme', () => ({
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    localStorage.setItem('darkMode', this.darkMode);
+                }
+            }))
+        });
+    </script>
 </body>
 </html>

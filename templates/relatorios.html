@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,13 @@
     
     <!-- Alpine.js for interactivity -->
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        // Configure Tailwind to use the 'class' strategy for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 
     <style>
         body {
@@ -35,11 +42,21 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555;
         }
+        .dark ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:bg-gray-900">
 
-    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100">
+    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100 dark:bg-gray-900">
         <!-- Sidebar -->
         <aside 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -47,7 +64,7 @@
             
             <!-- Logo -->
             <div class="flex items-center justify-center px-6 py-4 h-20 border-b border-gray-700">
-                <a href="clinicsoft-dashboard.html" class="text-2xl font-bold">
+                <a href="dashboard.html" class="text-2xl font-bold">
                     Clinic<span class="text-teal-400">Soft</span>
                 </a>
             </div>
@@ -55,35 +72,39 @@
             <!-- Navigation Links -->
             <nav class="flex-1 px-4 py-4 space-y-2">
                 <a href="dashboard.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                     <span>Dashboard</span>
                 </a>
                 <a href="agendadash.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                     <span>Agenda</span>
                 </a>
                 <a href="pacientes.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     <span>Pacientes</span>
                 </a>
                 <a href="financeiro.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2v1m0 0v1m-3.333-2.333C8.173 7.062 7.5 8.428 7.5 10c0 1.572.673 2.938 1.667 3.667m6.666 0c.994-.729 1.667-2.095 1.667-3.667 0-1.572-.673-2.938-1.667-3.667M12 12h.01"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6v-1m0-1V4m0 2v1m0 0v1m-3.333-2.333C8.173 7.062 7.5 8.428 7.5 10c0 1.572.673 2.938 1.667 3.667m6.666 0c.994-.729 1.667-2.095 1.667-3.667 0-1.572-.673-2.938-1.667-3.667M12 12h.01"></path></svg>
                     <span>Financeiro</span>
                 </a>
                  <a href="relatorios.html" class="flex items-center px-4 py-2 text-gray-100 bg-gray-700 rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <span>Relatórios</span>
                 </a>
                 <a href="marketing.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path></svg>
                     <span>Marketing</span>
                 </a>
+                <a href="gerencia.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
+                   <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197"></path></svg>
+                   <span>Gerência</span>
+                </a>
                 <a href="ajuda.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0l-3.536 3.536M14.828 9.172l-3.536-3.536m3.536 3.536l3.536 3.536M12 21a9 9 0 110-18 9 9 0 010 18z"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 0l-3.536 3.536M14.828 9.172l-3.536-3.536m3.536 3.536l3.536 3.536M12 21a9 9 0 110-18 9 9 0 010 18z"></path></svg>
                     <span>Ajuda</span>
                 </a>
                 <a href="configuracao.html" class="flex items-center px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                     <span>Configurações</span>
                 </a>
             </nav>
@@ -92,14 +113,20 @@
         <!-- Main content -->
         <div class="flex-1 flex flex-col overflow-hidden">
             <!-- Header -->
-            <header class="flex items-center justify-between px-6 py-4 bg-white border-b-4 border-teal-500">
+            <header class="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 border-b-4 border-teal-500 dark:border-teal-600">
                 <div class="flex items-center">
-                    <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none md:hidden">
+                    <button @click="sidebarOpen = true" class="text-gray-500 dark:text-gray-400 focus:outline-none md:hidden">
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4 6H20M4 12H20M4 18H11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <h2 class="text-2xl font-semibold text-gray-800">Central de Relatórios</h2>
+                    <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Central de Relatórios</h2>
+                </div>
+                 <div class="flex items-center space-x-4">
+                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
                 </div>
             </header>
 
@@ -107,23 +134,23 @@
             <main class="flex-1 overflow-y-auto p-6">
                 <div class="container mx-auto">
                     <!-- Filters -->
-                    <div class="bg-white p-4 rounded-lg shadow-md mb-6">
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6">
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
                             <div>
-                                <label for="report-type" class="block text-sm font-medium text-gray-700">Tipo de Relatório</label>
-                                <select id="report-type" name="report-type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md">
+                                <label for="report-type" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Relatório</label>
+                                <select id="report-type" name="report-type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md">
                                     <option>Financeiro</option>
                                     <option>Atendimentos</option>
                                     <option>Pacientes</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="start-date" class="block text-sm font-medium text-gray-700">Data Inicial</label>
-                                <input type="date" id="start-date" name="start-date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm">
+                                <label for="start-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Data Inicial</label>
+                                <input type="date" id="start-date" name="start-date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm">
                             </div>
                             <div>
-                                <label for="end-date" class="block text-sm font-medium text-gray-700">Data Final</label>
-                                <input type="date" id="end-date" name="end-date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm">
+                                <label for="end-date" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Data Final</label>
+                                <input type="date" id="end-date" name="end-date" class="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm">
                             </div>
                             <button class="w-full bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors duration-300">
                                 Filtrar Relatórios
@@ -133,58 +160,66 @@
 
                     <!-- Reports Grid -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Report Card 1 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                        <!-- Report Card -->
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-lg text-gray-800">Faturamento por Convênio</h3>
-                                <p class="text-sm text-gray-600 mt-2">Analise o valor faturado por cada convênio em um determinado período.</p>
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Faturamento por Convênio</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Analise o valor faturado por cada convênio em um determinado período.</p>
                             </div>
-                            <button class="w-full mt-4 bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Gerar Relatório</button>
+                            <button class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">Gerar Relatório</button>
                         </div>
-                        <!-- Report Card 2 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-lg text-gray-800">Atendimentos por Profissional</h3>
-                                <p class="text-sm text-gray-600 mt-2">Veja a quantidade de consultas e procedimentos realizados por cada profissional da clínica.</p>
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Atendimentos por Profissional</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Veja a quantidade de consultas e procedimentos realizados por cada profissional da clínica.</p>
                             </div>
-                            <button class="w-full mt-4 bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Gerar Relatório</button>
+                            <button class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">Gerar Relatório</button>
                         </div>
-                        <!-- Report Card 3 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-lg text-gray-800">Novos Pacientes</h3>
-                                <p class="text-sm text-gray-600 mt-2">Acompanhe o número de novos pacientes cadastrados no período selecionado.</p>
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Novos Pacientes</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Acompanhe o número de novos pacientes cadastrados no período selecionado.</p>
                             </div>
-                            <button class="w-full mt-4 bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Gerar Relatório</button>
+                            <button class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">Gerar Relatório</button>
                         </div>
-                        <!-- Report Card 4 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-lg text-gray-800">Fluxo de Caixa Detalhado</h3>
-                                <p class="text-sm text-gray-600 mt-2">Visualize todas as entradas e saídas, categorizadas para uma análise completa.</p>
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Fluxo de Caixa Detalhado</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Visualize todas as entradas e saídas, categorizadas para uma análise completa.</p>
                             </div>
-                            <button class="w-full mt-4 bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Gerar Relatório</button>
+                            <button class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">Gerar Relatório</button>
                         </div>
-                        <!-- Report Card 5 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-lg text-gray-800">Taxa de Não Comparecimento</h3>
-                                <p class="text-sm text-gray-600 mt-2">Identifique a taxa de "no-show" por profissional ou período para otimizar a agenda.</p>
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Taxa de Não Comparecimento</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Identifique a taxa de "no-show" por profissional ou período para otimizar a agenda.</p>
                             </div>
-                            <button class="w-full mt-4 bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Gerar Relatório</button>
+                            <button class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">Gerar Relatório</button>
                         </div>
-                         <!-- Report Card 6 -->
-                        <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+                        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col justify-between">
                             <div>
-                                <h3 class="font-bold text-lg text-gray-800">Repasse Médico</h3>
-                                <p class="text-sm text-gray-600 mt-2">Calcule e visualize os valores de repasse para cada profissional com base nas regras definidas.</p>
+                                <h3 class="font-bold text-lg text-gray-800 dark:text-gray-200">Repasse Médico</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Calcule e visualize os valores de repasse para cada profissional com base nas regras definidas.</p>
                             </div>
-                            <button class="w-full mt-4 bg-gray-200 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-300">Gerar Relatório</button>
+                            <button class="w-full mt-4 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600">Gerar Relatório</button>
                         </div>
                     </div>
                 </div>
             </main>
         </div>
     </div>
+
+    <script>
+        // Alpine.js component for theme management
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appTheme', () => ({
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    localStorage.setItem('darkMode', this.darkMode);
+                }
+            }))
+        });
+    </script>
 </body>
 </html>

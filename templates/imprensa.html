@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,28 +13,45 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        // Configure Tailwind to use the 'class' strategy for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
         }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300">
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800">
-                    Clinic<span class="text-teal-600">Soft</span>
+                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800 dark:text-white">
+                    Clinic<span class="text-teal-600 dark:text-teal-400">Soft</span>
                 </a>
-                <!-- Back to Home Link -->
-                <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500">
-                    &larr; Voltar para o Início
-                </a>
+                <div class="flex items-center space-x-4">
+                     <!-- Theme Toggle Button -->
+                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <!-- Back to Home Link -->
+                    <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300">
+                        &larr; Voltar para o Início
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -42,68 +59,68 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section class="bg-white pt-16 pb-12">
+        <section class="bg-white dark:bg-gray-800 pt-16 pb-12">
             <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight mb-4">
-                    Sala de Imprensa <span class="text-teal-600">ClinicSoft</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-200 leading-tight mb-4">
+                    Sala de Imprensa <span class="text-teal-600 dark:text-teal-400">ClinicSoft</span>
                 </h1>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                     Recursos, comunicados e informações para jornalistas e profissionais de mídia interessados em nossa missão de inovar na gestão de saúde.
                 </p>
             </div>
         </section>
 
         <!-- Press Releases Section -->
-        <section class="py-16 bg-gray-50">
+        <section class="py-16 bg-gray-50 dark:bg-gray-900">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-800">Comunicados de Imprensa</h2>
+                    <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Comunicados de Imprensa</h2>
                 </div>
                 <div class="max-w-4xl mx-auto space-y-6">
                     <!-- Release 1 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        <p class="text-sm text-gray-500">25 de Junho, 2025</p>
-                        <h3 class="text-xl font-bold text-gray-800 mt-2">ClinicSoft Lança Nova Ferramenta de Telemedicina com Inteligência Artificial</h3>
-                        <p class="text-gray-600 mt-2">A nova funcionalidade promete otimizar o tempo de consulta e oferecer diagnósticos mais precisos, integrando-se perfeitamente ao prontuário eletrônico.</p>
-                        <a href="#" class="text-teal-600 hover:text-teal-500 font-semibold mt-4 inline-block">Ler mais &rarr;</a>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg dark:hover:shadow-gray-700/50 transition-shadow duration-300">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">25 de Junho, 2025</p>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-2">ClinicSoft Lança Nova Ferramenta de Telemedicina com Inteligência Artificial</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">A nova funcionalidade promete otimizar o tempo de consulta e oferecer diagnósticos mais precisos, integrando-se perfeitamente ao prontuário eletrônico.</p>
+                        <a href="#" class="text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300 font-semibold mt-4 inline-block">Ler mais &rarr;</a>
                     </div>
                     <!-- Release 2 -->
-                    <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                        <p class="text-sm text-gray-500">10 de Maio, 2025</p>
-                        <h3 class="text-xl font-bold text-gray-800 mt-2">ClinicSoft Anuncia Parceria Estratégica para Expandir Atuação na América Latina</h3>
-                        <p class="text-gray-600 mt-2">A parceria visa levar a tecnologia de gestão da ClinicSoft para mais de 5.000 novas clínicas nos próximos dois anos.</p>
-                        <a href="#" class="text-teal-600 hover:text-teal-500 font-semibold mt-4 inline-block">Ler mais &rarr;</a>
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg dark:hover:shadow-gray-700/50 transition-shadow duration-300">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">10 de Maio, 2025</p>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mt-2">ClinicSoft Anuncia Parceria Estratégica para Expandir Atuação na América Latina</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">A parceria visa levar a tecnologia de gestão da ClinicSoft para mais de 5.000 novas clínicas nos próximos dois anos.</p>
+                        <a href="#" class="text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300 font-semibold mt-4 inline-block">Ler mais &rarr;</a>
                     </div>
                 </div>
             </div>
         </section>
         
         <!-- Press Kit & Media Section -->
-        <section class="py-16 bg-white">
+        <section class="py-16 bg-white dark:bg-gray-800">
             <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-start">
                 <!-- Press Kit -->
-                <div class="bg-gray-50 p-8 rounded-lg">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Kit de Imprensa</h2>
-                    <p class="text-gray-600 mb-6">Acesse nosso kit de imprensa para encontrar logos, imagens da plataforma e informações sobre a nossa marca.</p>
+                <div class="bg-gray-50 dark:bg-gray-700/50 p-8 rounded-lg">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Kit de Imprensa</h2>
+                    <p class="text-gray-600 dark:text-gray-400 mb-6">Acesse nosso kit de imprensa para encontrar logos, imagens da plataforma e informações sobre a nossa marca.</p>
                     <button class="w-full bg-teal-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-teal-600 transition-colors duration-300">
                         Baixar Kit de Imprensa (.zip)
                     </button>
-                    <div class="mt-8 border-t pt-6">
-                        <h3 class="text-lg font-semibold text-gray-700">Contato para Imprensa</h3>
-                        <p class="text-gray-600 mt-2">Para entrevistas, perguntas ou outras solicitações, entre em contato com nossa equipe de comunicação.</p>
+                    <div class="mt-8 border-t dark:border-gray-600 pt-6">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Contato para Imprensa</h3>
+                        <p class="text-gray-600 dark:text-gray-400 mt-2">Para entrevistas, perguntas ou outras solicitações, entre em contato com nossa equipe de comunicação.</p>
                         <p class="mt-4">
-                            <a href="mailto:imprensa@clinicsoft.com.br" class="text-teal-600 font-semibold">imprensa@clinicsoft.com.br</a>
+                            <a href="mailto:imprensa@clinicsoft.com.br" class="text-teal-600 dark:text-teal-400 font-semibold">imprensa@clinicsoft.com.br</a>
                         </p>
                     </div>
                 </div>
                 <!-- In the Media -->
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-4">Destaques na Mídia</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Destaques na Mídia</h2>
                     <div class="space-y-4">
-                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Saúde+Tech+Hoje" alt="Logo Mídia 1" class="h-12 opacity-70">
-                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Jornal+do+Médico" alt="Logo Mídia 2" class="h-12 opacity-70">
-                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Portal+da+Saúde" alt="Logo Mídia 3" class="h-12 opacity-70">
-                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Inova+Health" alt="Logo Mídia 4" class="h-12 opacity-70">
+                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Saúde+Tech+Hoje" alt="Logo Mídia 1" class="h-12 opacity-70 dark:opacity-50">
+                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Jornal+do+Médico" alt="Logo Mídia 2" class="h-12 opacity-70 dark:opacity-50">
+                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Portal+da+Saúde" alt="Logo Mídia 3" class="h-12 opacity-70 dark:opacity-50">
+                        <img src="https://placehold.co/200x60/E2E8F0/4A5568?text=Inova+Health" alt="Logo Mídia 4" class="h-12 opacity-70 dark:opacity-50">
                     </div>
                 </div>
             </div>
@@ -113,9 +130,21 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white">
         <div class="container mx-auto px-6 py-12 text-center">
-            <p>&copy; 2025 ClinicSoft. Todos os direitos reservados.</p>
+            <p class="text-gray-400">&copy; 2025 ClinicSoft. Todos os direitos reservados.</p>
         </div>
     </footer>
 
+    <script>
+        // Alpine.js component for theme management
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appTheme', () => ({
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    localStorage.setItem('darkMode', this.darkMode);
+                }
+            }))
+        });
+    </script>
 </body>
 </html>

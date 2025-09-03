@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,26 +13,46 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        // Configure Tailwind to use the 'class' strategy for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
         }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-gray-50">
-    <div class="flex min-h-screen items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-lg">
+<body class="bg-gray-50 dark:bg-gray-900">
+
+    <div class="flex min-h-screen items-center justify-center bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="relative w-full max-w-md p-8 space-y-8 bg-white dark:bg-gray-800 rounded-2xl shadow-lg">
             
+            <!-- Theme Toggle Button -->
+            <div class="absolute top-6 right-6">
+                <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                    <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                    <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                </button>
+            </div>
+
             <!-- Header -->
             <div class="text-center">
-                <a href="areadeagendamento.html" class="inline-block text-3xl font-bold text-gray-800">
-                    Clinic<span class="text-teal-600">Soft</span>
+                <a href="areadeagendamento.html" class="inline-block text-3xl font-bold text-gray-800 dark:text-white">
+                    Clinic<span class="text-teal-600 dark:text-teal-400">Soft</span>
                 </a>
-                <h2 class="mt-4 text-2xl font-bold text-gray-900">
+                <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-gray-200">
                     Crie sua conta gratuitamente
                 </h2>
-                <p class="mt-2 text-sm text-gray-600">
+                <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     Comece a otimizar sua clínica hoje mesmo.
                 </p>
             </div>
@@ -42,38 +62,51 @@
                 <div class="rounded-md shadow-sm space-y-4">
                     <div>
                         <label for="full-name" class="sr-only">Nome Completo</label>
-                        <input id="full-name" name="name" type="text" autocomplete="name" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Nome Completo">
+                        <input id="full-name" name="name" type="text" autocomplete="name" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Nome Completo">
                     </div>
                     <div>
                         <label for="email-address" class="sr-only">Endereço de e-mail</label>
-                        <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Endereço de e-mail">
+                        <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Endereço de e-mail">
                     </div>
                     <div>
                         <label for="password" class="sr-only">Senha</label>
-                        <input id="password" name="password" type="password" autocomplete="new-password" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Senha">
+                        <input id="password" name="password" type="password" autocomplete="new-password" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Senha">
                     </div>
                      <div>
                         <label for="confirm-password" class="sr-only">Confirmar Senha</label>
-                        <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Confirmar Senha">
+                        <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" required class="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-200 bg-white dark:bg-gray-700 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm" placeholder="Confirmar Senha">
                     </div>
                 </div>
 
             </form>
             <div>
-                <button class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500" onclick="createItem()">
+                <button class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-teal-500" onclick="createItem()">
                     Criar Conta
                 </button>
             </div>
             
             <!-- Footer Link -->
-            <p class="mt-6 text-center text-sm text-gray-600">
+            <p class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
                 Já tem uma conta?
-                <a href="clinicsoft-login.html" class="font-medium text-teal-600 hover:text-teal-500">
+                <a href="clinicsoft-login.html" class="font-medium text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300">
                     Faça login
                 </a>
             </p>
         </div>
     </div>
+    
+    <script>
+        // Alpine.js component for theme management
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appTheme', () => ({
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    localStorage.setItem('darkMode', this.darkMode);
+                }
+            }))
+        });
+    </script>
 
     <script src="{{ url_for('static', filename='register.js') }}"></script>
 </body>

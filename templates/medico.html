@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,28 +13,45 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Alpine.js for interactivity -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
+    <script>
+        // Configure Tailwind to use the 'class' strategy for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
 
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #F8F9FA;
         }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-300">
 
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
         <div class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <!-- Logo -->
-                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800">
-                    Clinic<span class="text-teal-600">Soft</span>
+                <a href="areadeagendamento.html" class="text-2xl font-bold text-gray-800 dark:text-white">
+                    Clinic<span class="text-teal-600 dark:text-teal-400">Soft</span>
                 </a>
-                <!-- Back to Home Link -->
-                <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500">
-                    &larr; Voltar para o Início
-                </a>
+                <div class="flex items-center space-x-4">
+                     <!-- Theme Toggle Button -->
+                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                    <!-- Back to Home Link -->
+                    <a href="areadeagendamento.html" class="font-medium text-teal-600 hover:text-teal-500 dark:text-teal-400 dark:hover:text-teal-300">
+                        &larr; Voltar para o Início
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -42,93 +59,93 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section class="bg-white pt-16 pb-12">
+        <section class="bg-white dark:bg-gray-800 pt-16 pb-12">
             <div class="container mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 leading-tight mb-4">
-                    Agenda Médica <span class="text-teal-600">Inteligente e Integrada</span>
+                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-gray-200 leading-tight mb-4">
+                    Agenda Médica <span class="text-teal-600 dark:text-teal-400">Inteligente e Integrada</span>
                 </h1>
-                <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                     Visualize seus compromissos de forma clara, gerencie múltiplos profissionais e otimize o tempo da sua equipe com uma agenda projetada para a rotina médica.
                 </p>
             </div>
         </section>
 
         <!-- Agenda Mockup Section -->
-        <section class="py-16 bg-gray-50">
+        <section class="py-16 bg-gray-50 dark:bg-gray-900">
             <div class="container mx-auto px-6">
-                <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-2xl p-4 sm:p-6 border">
+                <div class="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-xl shadow-2xl p-4 sm:p-6 border dark:border-gray-700">
                     <div class="flex flex-col h-[600px]">
                         <!-- Agenda Header -->
-                        <div class="flex items-center justify-between pb-4 border-b">
+                        <div class="flex items-center justify-between pb-4 border-b dark:border-gray-700">
                             <div class="flex items-center space-x-4">
-                                <h2 class="text-xl font-bold text-gray-700">Agenda Semanal</h2>
-                                <span class="text-lg font-medium text-gray-500">Julho 2025</span>
+                                <h2 class="text-xl font-bold text-gray-700 dark:text-gray-200">Agenda Semanal</h2>
+                                <span class="text-lg font-medium text-gray-500 dark:text-gray-400">Julho 2025</span>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <button class="p-2 rounded-md hover:bg-gray-200">&larr;</button>
-                                <button class="px-4 py-2 text-sm font-semibold bg-gray-200 rounded-md">Hoje</button>
-                                <button class="p-2 rounded-md hover:bg-gray-200">&rarr;</button>
+                                <button class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300">&larr;</button>
+                                <button class="px-4 py-2 text-sm font-semibold bg-gray-200 dark:bg-gray-700 dark:text-gray-300 rounded-md">Hoje</button>
+                                <button class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 dark:text-gray-300">&rarr;</button>
                             </div>
                         </div>
                         <!-- Agenda Grid -->
                         <div class="grid grid-cols-8 flex-grow">
                             <!-- Time Column -->
-                            <div class="col-span-1 border-r text-sm text-center text-gray-500">
-                                <div class="h-16 flex items-center justify-center border-b"></div>
-                                <div class="h-16 flex items-center justify-center border-b">09:00</div>
-                                <div class="h-16 flex items-center justify-center border-b">10:00</div>
-                                <div class="h-16 flex items-center justify-center border-b">11:00</div>
-                                <div class="h-16 flex items-center justify-center border-b">12:00</div>
+                            <div class="col-span-1 border-r dark:border-gray-700 text-sm text-center text-gray-500 dark:text-gray-400">
+                                <div class="h-16 flex items-center justify-center border-b dark:border-gray-700"></div>
+                                <div class="h-16 flex items-center justify-center border-b dark:border-gray-700">09:00</div>
+                                <div class="h-16 flex items-center justify-center border-b dark:border-gray-700">10:00</div>
+                                <div class="h-16 flex items-center justify-center border-b dark:border-gray-700">11:00</div>
+                                <div class="h-16 flex items-center justify-center border-b dark:border-gray-700">12:00</div>
                             </div>
                             <!-- Days Columns -->
                             <div class="col-span-7 grid grid-cols-7">
                                 <!-- Day Column -->
-                                <div class="text-center border-r">
-                                    <div class="h-16 flex items-center justify-center border-b font-semibold">Seg 30</div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1 bg-teal-50 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-teal-500 text-white rounded-t-sm">Consulta - Ana Silva</div></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
+                                <div class="text-center border-r dark:border-gray-700">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-semibold dark:text-gray-300">Seg 30</div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1 bg-teal-50 dark:bg-teal-900/30 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-teal-500 text-white rounded-t-sm">Consulta - Ana Silva</div></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
                                 </div>
                                 <!-- Day Column -->
-                                <div class="text-center border-r">
-                                    <div class="h-16 flex items-center justify-center border-b font-semibold">Ter 01</div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1 bg-orange-50 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-orange-400 text-white rounded-t-sm">Retorno - João Costa</div></div>
-                                    <div class="h-16 border-b p-1"></div>
+                                <div class="text-center border-r dark:border-gray-700">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-semibold dark:text-gray-300">Ter 01</div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1 bg-orange-50 dark:bg-orange-900/30 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-orange-400 text-white rounded-t-sm">Retorno - João Costa</div></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
                                 </div>
                                 <!-- Day Column -->
-                                <div class="text-center border-r bg-teal-50">
-                                    <div class="h-16 flex items-center justify-center border-b font-bold text-teal-600">Qua 02</div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
+                                <div class="text-center border-r dark:border-gray-700 bg-teal-50 dark:bg-teal-900/20">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-bold text-teal-600 dark:text-teal-400">Qua 02</div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
                                 </div>
                                 <!-- Day Column -->
-                                <div class="text-center border-r">
-                                    <div class="h-16 flex items-center justify-center border-b font-semibold">Qui 03</div>
-                                    <div class="h-16 border-b p-1 bg-indigo-50 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-indigo-400 text-white rounded-t-sm">Telemedicina - M. Oliveira</div></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
+                                <div class="text-center border-r dark:border-gray-700">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-semibold dark:text-gray-300">Qui 03</div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1 bg-indigo-50 dark:bg-indigo-900/30 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-indigo-400 text-white rounded-t-sm">Telemedicina - M. Oliveira</div></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
                                 </div>
                                 <!-- Day Column -->
-                                <div class="text-center border-r">
-                                    <div class="h-16 flex items-center justify-center border-b font-semibold">Sex 04</div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1 bg-teal-50 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-teal-500 text-white rounded-t-sm">Consulta - Carlos Ferreira</div></div>
-                                    <div class="h-16 border-b p-1"></div>
-                                    <div class="h-16 border-b p-1"></div>
+                                <div class="text-center border-r dark:border-gray-700">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-semibold dark:text-gray-300">Sex 04</div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1 bg-teal-50 dark:bg-teal-900/30 relative"><div class="absolute top-0 left-0 w-full p-1 text-xs text-left bg-teal-500 text-white rounded-t-sm">Consulta - Carlos Ferreira</div></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
+                                    <div class="h-16 border-b dark:border-gray-700 p-1"></div>
                                 </div>
                                 <!-- Day Column -->
-                                <div class="text-center border-r bg-gray-100">
-                                    <div class="h-16 flex items-center justify-center border-b font-semibold text-gray-400">Sáb 05</div>
+                                <div class="text-center border-r dark:border-gray-700 bg-gray-100 dark:bg-gray-800/50">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-semibold text-gray-400">Sáb 05</div>
                                 </div>
                                 <!-- Day Column -->
-                                <div class="text-center bg-gray-100">
-                                    <div class="h-16 flex items-center justify-center border-b font-semibold text-gray-400">Dom 06</div>
+                                <div class="text-center bg-gray-100 dark:bg-gray-800/50">
+                                    <div class="h-16 flex items-center justify-center border-b dark:border-gray-700 font-semibold text-gray-400">Dom 06</div>
                                 </div>
                             </div>
                         </div>
@@ -138,32 +155,60 @@
         </section>
 
         <!-- Features Explanation Section -->
-        <section class="py-16 bg-white">
+        <section class="py-16 bg-white dark:bg-gray-800">
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-12 items-center">
                     <div>
-                        <h2 class="text-3xl font-bold text-gray-800">Interface Intuitiva para Médicos</h2>
-                        <p class="mt-4 text-lg text-gray-600">A agenda da ClinicSoft foi desenhada para simplificar sua rotina. Com uma visualização clara e personalizável (diária, semanal ou mensal), você pode gerenciar seus horários com poucos cliques.</p>
+                        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Interface Intuitiva para Médicos</h2>
+                        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">A agenda da ClinicSoft foi desenhada para simplificar sua rotina. Com uma visualização clara e personalizável (diária, semanal ou mensal), você pode gerenciar seus horários com poucos cliques.</p>
                         <ul class="mt-6 space-y-4">
                             <li class="flex items-start">
-                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                                <p class="ml-3 text-gray-600"><strong>Agendamento Rápido:</strong> Crie, mova ou cancele consultas arrastando e soltando.</p>
+                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                                <p class="ml-3 text-gray-600 dark:text-gray-400"><strong>Agendamento Rápido:</strong> Crie, mova ou cancele consultas arrastando e soltando.</p>
                             </li>
                             <li class="flex items-start">
-                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                                <p class="ml-3 text-gray-600"><strong>Bloqueio de Horários:</strong> Reserve tempo para compromissos pessoais ou procedimentos com facilidade.</p>
+                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                                <p class="ml-3 text-gray-600 dark:text-gray-400"><strong>Bloqueio de Horários:</strong> Reserve tempo para compromissos pessoais ou procedimentos com facilidade.</p>
                             </li>
                              <li class="flex items-start">
-                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                                <p class="ml-3 text-gray-600"><strong>Status Personalizados:</strong> Identifique rapidamente o status de cada consulta (confirmado, pendente, cancelado).</p>
+                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                                <p class="ml-3 text-gray-600 dark:text-gray-400"><strong>Status Personalizados:</strong> Identifique rapidamente o status de cada consulta (confirmado, pendente, cancelado).</p>
                             </li>
                         </ul>
                     </div>
                      <div>
-                        <h2 class="text-3xl font-bold text-gray-800">Gestão Eficiente para a Equipe</h2>
-                        <p class="mt-4 text-lg text-gray-600">A equipe de recepção e administração tem uma visão completa e centralizada de todas as agendas, permitindo uma gestão de fluxo de pacientes muito mais eficiente.</p>
+                        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-200">Gestão Eficiente para a Equipe</h2>
+                        <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">A equipe de recepção e administração tem uma visão completa e centralizada de todas as agendas, permitindo uma gestão de fluxo de pacientes muito mais eficiente.</p>
                         <ul class="mt-6 space-y-4">
                             <li class="flex items-start">
-                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
-                                <p class="ml-3 text-gray-600"><strong>Múltiplas Agendas:</strong> Gerencie a agenda de vários profissionais em uma única tela, evitando conflitos.</p>
+                                <div class="flex-shrink-0"><svg class="w-6 h-6 text-teal-500 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                                <p class="ml-3 text-gray-600 dark:text-gray-400"><strong>Múltiplas Agendas:</strong> Gerencie a agenda de vários profissionais em uma única tela, evitando conflitos.</p>
                             </li>
+                        </ul>
+                     </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <p class="text-gray-400">&copy; 2025 ClinicSoft. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Alpine.js component for theme management
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('appTheme', () => ({
+                darkMode: localStorage.getItem('darkMode') === 'true',
+                toggleDarkMode() {
+                    this.darkMode = !this.darkMode;
+                    localStorage.setItem('darkMode', this.darkMode);
+                }
+            }))
+        });
+    </script>
+</body>
+</html>

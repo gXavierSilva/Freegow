@@ -9,7 +9,7 @@ def register_page():
 
 @page_bp.route('/login', methods=['GET'])
 def login_page():
-    return render_template('clinicsoft-login.html')
+    return render_template('login.html')
 
 # Rotas que renderizam páginas do Dashboard
 @page_bp.route('/dashboard', methods=['GET'])
