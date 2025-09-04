@@ -11,6 +11,10 @@ def register_page():
 def login_page():
     return render_template('login.html')
 
+@page_bp.route('/recovery', methods=['GET'])
+def recovery_page():
+    return render_template('recuperação.html')
+
 # Rotas que renderizam páginas do Dashboard
 @page_bp.route('/dashboard', methods=['GET'])
 def dashboard_page():
@@ -35,6 +39,10 @@ def reports_page():
 @page_bp.route('/marketing', methods=['GET'])
 def marketing_page():
     return render_template('marketing.html')
+
+@page_bp.route('/management', methods=['GET'])
+def management_page():
+    return render_template('gerencia.html')
 
 @page_bp.route('/help', methods=['GET'])
 def help_page():
