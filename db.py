@@ -17,8 +17,9 @@ def create_tables():
     cur = conn.cursor()
     try:
         create_all_tables(cur)
-    except:
-        print("Tabela já criada.")
+        print("Tabelas criadas com sucesso.")
+    except Exception as e:
+        print("Erro ao criar tabelas:", e)
     conn.commit()
     cur.close()
     conn.close()

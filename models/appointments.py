@@ -1,9 +1,9 @@
 def create_appointments_table(cur):
     cur.execute("""
-        CREATE TABLE patients (
-            id SERIAL PRIMARY KEY,
+        CREATE TABLE appointments (
+            appointment_id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
-            cpf INT(11) NOT NULL UNIQUE,
+            cpf INT NOT NULL UNIQUE,
             birth DATE NOT NULL UNIQUE,
             appointment DATE NOT NULL UNIQUE,
             time TIME NOT NULL UNIQUE,

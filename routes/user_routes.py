@@ -14,27 +14,29 @@ def create_user():
     if not data or 'name' not in data or 'email' not in data or 'password' not in data:
         return jsonify({"error": "As credenciais são obrigatórias."}), 400
 
-    name, email, password = data["name"], data["email"], data["password"]
+    # name, email, password = data["name"], data["email"], data["password"]
+    name, email, password, role_id = data["name"], data["email"], data["password"], data["role_id"]
     conn = None
 
     try:
         conn = get_db_connection()
         cur = conn.cursor()
         cur.execute(
-            """INSERT INTO users (name, email, password)
-                VALUES (%s, %s, %s)
-                RETURNING id, name, email, password, created_at, is_active""",
-            (name, email, password)
+            """INSERT INTO users (name, email, password, role_id)
+                VALUES (%s, %s, %s, %s)
+                RETURNING user_id, name, email, password, role_id, created_at, is_active""",
+            (name, email, password, role_id)
         )
         new_item = cur.fetchone()
         conn.commit()
         return jsonify({
-            "id": new_item[0],
+            "user_id": new_item[0],
             "name": new_item[1],
             "email": new_item[2],
             "password": new_item[3],
-            "created_at": new_item[4].isoformat(),
-            "is_active": new_item[5]
+            "role_id": new_item[4],
+            "created_at": new_item[5].isoformat(),
+            "is_active": new_item[6]
         }), 201
         
     except Exception as e:
@@ -53,16 +55,17 @@ def get_users():
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        cur.execute("SELECT id, name, email, password, created_at, is_active FROM users ORDER BY created_at DESC")
+        cur.execute("SELECT user_id, name, email, password, role_id, created_at, is_active FROM users ORDER BY created_at DESC")
         users = cur.fetchall()
         return jsonify([
             {
-                "id": user[0],
+                "user_id": user[0],
                 "name": user[1],
                 "email": user[2],
                 "password": user[3],
-                "created_at": user[4].isoformat(),
-                "is_active": user[5]
+                "role_id": user[4],
+                "created_at": user[5].isoformat(),
+                "is_active": user[6]
             } for user in users
         ])
     except Exception as e:

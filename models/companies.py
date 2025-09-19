@@ -1,7 +1,7 @@
 def create_companies_table(cur):
     cur.execute("""
         CREATE TABLE companies (
-            id SERIAL PRIMARY KEY,
+            companie_id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
             plan VARCHAR(100) NOT NULL,
             exam VARCHAR(100) NOT NULL,

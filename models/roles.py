@@ -1,9 +1,9 @@
-def create_patients_table(cur):
+def create_roles_table(cur):
     cur.execute("""
-        CREATE TABLE patients (
-            patient_id SERIAL PRIMARY KEY,
+        CREATE TABLE roles (
+            role_id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
-            cpf INT NOT NULL UNIQUE,
+            access VARCHAR(255) NOT NULL UNIQUE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             is_active BOOLEAN DEFAULT TRUE
         );
