@@ -4,7 +4,7 @@ from .roles import create_roles_table
 from .clinics import create_clinics_table
 from .patients import create_patients_table
 from .companies import create_companies_table
-from .appointments import create_appointments_table
+from .appointments import create_appointments_table, add_appointments_constraints
 from .allotments import create_allotments_table
 
 def create_all_tables(cur):
@@ -22,6 +22,7 @@ def create_all_tables(cur):
 
         add_branches_constraints(cur)
         add_users_constraints(cur)
+        add_appointments_constraints(cur)
         print("Constraints adicionadas com sucesso!")
 
         cur.execute("COMMIT;")

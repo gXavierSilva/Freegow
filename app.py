@@ -8,8 +8,8 @@ def create_app():
     app.config.from_object(Config)
 
     with app.app_context():
-        drop_all_tables()
-        # create_tables()
+        # drop_all_tables()
+        create_tables()
     
     register_routes(app)
     return app
