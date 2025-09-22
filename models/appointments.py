@@ -3,7 +3,7 @@ def create_appointments_table(cur):
         CREATE TABLE appointments (
             appointment_id SERIAL PRIMARY KEY,
             name VARCHAR(100) NOT NULL,
-            cpf INT NOT NULL UNIQUE,
+            cpf CHAR(11) NOT NULL UNIQUE,
             birth DATE NOT NULL UNIQUE,
             appointment DATE NOT NULL UNIQUE,
             time TIME NOT NULL UNIQUE,

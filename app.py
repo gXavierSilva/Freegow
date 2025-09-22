@@ -1,6 +1,6 @@
 from flask import Flask
 from config import Config
-from db import create_tables
+from db import create_tables, drop_all_tables
 from routes import register_routes
 
 def create_app():
@@ -8,7 +8,8 @@ def create_app():
     app.config.from_object(Config)
 
     with app.app_context():
-        create_tables()
+        drop_all_tables()
+        # create_tables()
     
     register_routes(app)
     return app
