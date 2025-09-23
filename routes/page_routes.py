@@ -24,9 +24,9 @@ def dashboard_page():
 def schedule_page():
     return render_template('agendadash.html')
 
-@page_bp.route('/patients', methods=['GET'])
-def patients_page():
-    return render_template('pacientes.html')
+# @page_bp.route('/patients', methods=['GET'])
+# def patients_page():
+#     return render_template('pacientes.html')
 
 @page_bp.route('/financial', methods=['GET'])
 def financial_page():
