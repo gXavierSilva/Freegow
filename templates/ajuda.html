@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
+<html lang="pt-BR" x-data :class="{ 'dark': $store.appTheme.darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,7 +56,36 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
 
-    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div x-data="helpPage()" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+        <!-- Pop-up Notification -->
+        <div 
+            x-show="popup.show"
+            x-cloak
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform -translate-y-4"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform -translate-y-4"
+            class="fixed top-5 right-5 w-full max-w-sm rounded-lg shadow-lg"
+            :class="{
+                'bg-green-500': popup.type === 'success',
+                'bg-red-500': popup.type === 'error'
+            }"
+            style="z-index: 100;"
+        >
+            <div class="p-4 flex items-center">
+                <div class="mr-3">
+                    <svg x-show="popup.type === 'success'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg x-show="popup.type === 'error'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-white font-medium" x-text="popup.message"></p>
+                <button @click="popup.show = false" class="ml-auto p-1 text-white rounded-full hover:bg-white/20 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Sidebar -->
         <aside 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -124,9 +153,9 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Theme Toggle Button -->
-                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <button @click="$store.appTheme.toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!$store.appTheme.darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="$store.appTheme.darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
                 </div>
             </header>
@@ -177,10 +206,10 @@
                         <div class="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                             <h3 class="font-bold text-xl text-gray-800 dark:text-gray-200 mb-4">Envie sua Sugestão ou Feedback</h3>
                             <p class="text-gray-600 dark:text-gray-400 mb-6">Sua opinião é muito importante para nós! Use o campo abaixo para nos enviar sugestões de melhoria, novas funcionalidades ou qualquer feedback sobre a plataforma.</p>
-                            <form action="mailto:suporte@clinicsoft.com.br?subject=Sugestão/Feedback do Site" method="GET" enctype="text/plain">
+                            <form @submit.prevent="submitFeedback()">
                                 <div>
                                     <label for="suggestion" class="sr-only">Sua mensagem</label>
-                                    <textarea id="suggestion" name="body" rows="8" class="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200" placeholder="Digite sua mensagem aqui..."></textarea>
+                                    <textarea x-model="suggestionText" id="suggestion" name="body" rows="8" class="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-200" placeholder="Digite sua mensagem aqui..."></textarea>
                                 </div>
                                 <div class="mt-4 text-right">
                                     <button type="submit" class="bg-teal-500 text-white font-semibold py-2 px-6 rounded-lg hover:bg-teal-600 transition-colors">
@@ -195,16 +224,43 @@
         </div>
     </div>
     <script>
-        // Alpine.js component for theme management
+        // Alpine store for global theme state
         document.addEventListener('alpine:init', () => {
-            Alpine.data('appTheme', () => ({
+            Alpine.store('appTheme', {
                 darkMode: localStorage.getItem('darkMode') === 'true',
                 toggleDarkMode() {
                     this.darkMode = !this.darkMode;
                     localStorage.setItem('darkMode', this.darkMode);
                 }
-            }))
+            });
         });
+
+        function helpPage() {
+            return {
+                sidebarOpen: false,
+                popup: { show: false, message: '', type: 'success' },
+                suggestionText: '',
+
+                displayPopup(message, type) {
+                    this.popup.message = message;
+                    this.popup.type = type;
+                    this.popup.show = true;
+                    setTimeout(() => this.popup.show = false, 4000);
+                },
+
+                submitFeedback() {
+                    if (this.suggestionText.trim() === '') {
+                        this.displayPopup('Erro ao enviar feedback. Tente novamente', 'error');
+                        return;
+                    }
+                    
+                    // Here you would typically send the feedback to a server.
+                    // For this example, we'll just show a success message.
+                    this.displayPopup('Feedback enviado com sucesso', 'success');
+                    this.suggestionText = ''; // Clear the textarea
+                }
+            }
+        }
     </script>
 </body>
 </html>

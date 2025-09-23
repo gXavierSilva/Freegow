@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
+<html lang="pt-BR" x-data :class="{ 'dark': $store.appTheme.darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,6 +57,35 @@
 <body class="bg-gray-100 dark:bg-gray-900">
 
     <div x-data="managementPage()" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+        <!-- Pop-up Notification -->
+        <div 
+            x-show="popup.show"
+            x-cloak
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform -translate-y-4"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform -translate-y-4"
+            class="fixed top-5 right-5 w-full max-w-sm rounded-lg shadow-lg"
+            :class="{
+                'bg-green-500': popup.type === 'success',
+                'bg-red-500': popup.type === 'error'
+            }"
+            style="z-index: 100;"
+        >
+            <div class="p-4 flex items-center">
+                <div class="mr-3">
+                    <svg x-show="popup.type === 'success'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg x-show="popup.type === 'error'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-white font-medium" x-text="popup.message"></p>
+                <button @click="popup.show = false" class="ml-auto p-1 text-white rounded-full hover:bg-white/20 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Sidebar -->
         <aside 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -123,9 +152,9 @@
                     <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">Gerenciamento de Equipe</h2>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
-                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <button @click="$store.appTheme.toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!$store.appTheme.darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="$store.appTheme.darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
                     <button x-show="currentUser.role === 'Administrador'" @click="openFilialModal()" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -155,7 +184,7 @@
                                         <span class="mt-2 px-2 py-1 text-xs font-semibold rounded-full" :class="user.status === 'Ativo' ? 'bg-green-200 text-green-800 dark:bg-green-900/50 dark:text-green-300' : 'bg-red-200 text-red-800 dark:bg-red-900/50 dark:text-red-300'" x-text="user.status"></span>
                                         <div class="mt-4 border-t dark:border-gray-700 w-full pt-3 flex justify-center space-x-3">
                                             <button @click="openModal(user)" class="text-teal-600 dark:text-teal-400 hover:underline text-sm font-medium">Editar Permissões</button>
-                                            <button @click="deleteUser(user.id)" class="text-red-600 dark:text-red-500 hover:underline text-sm font-medium">Remover</button>
+                                            <button @click="confirmDeleteUser(user.id)" class="text-red-600 dark:text-red-500 hover:underline text-sm font-medium">Remover</button>
                                         </div>
                                     </div>
                                 </template>
@@ -174,7 +203,7 @@
                                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Gerente: <span x-text="filial.manager"></span></p>
                                     <div class="mt-4 border-t dark:border-gray-700 w-full pt-3 flex justify-end space-x-3">
                                         <button @click="openFilialModal(filial)" class="text-teal-600 dark:text-teal-400 hover:underline text-sm font-medium">Editar</button>
-                                        <button @click="deleteFilial(filial.id)" class="text-red-600 dark:text-red-500 hover:underline text-sm font-medium">Excluir</button>
+                                        <button @click="confirmDeleteFilial(filial.id)" class="text-red-600 dark:text-red-500 hover:underline text-sm font-medium">Excluir</button>
                                     </div>
                                 </div>
                             </template>
@@ -271,18 +300,45 @@
                 </div>
             </div>
         </div>
+
+        <!-- Delete Confirmation Modal -->
+        <div x-show="isDeleteModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex items-center justify-center min-h-screen">
+                <div @click="isDeleteModalOpen = false" class="fixed inset-0 bg-gray-500 dark:bg-black bg-opacity-75 dark:bg-opacity-50"></div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                    <div class="bg-white dark:bg-gray-800 p-6">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/50 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white" x-text="deleteModalTitle"></h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Esta ação não pode ser desfeita.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-900 px-6 py-3 flex justify-end space-x-3">
+                         <button @click="isDeleteModalOpen = false" type="button" class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">Cancelar</button>
+                        <button @click="deleteConfirmed()" type="button" class="bg-red-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-red-700">Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     
     <script>
-        // Alpine.js component for theme management
+        // Alpine store for global theme state
         document.addEventListener('alpine:init', () => {
-            Alpine.data('appTheme', () => ({
+            Alpine.store('appTheme', {
                 darkMode: localStorage.getItem('darkMode') === 'true',
                 toggleDarkMode() {
                     this.darkMode = !this.darkMode;
                     localStorage.setItem('darkMode', this.darkMode);
                 }
-            }))
+            });
         });
 
         function managementPage() {
@@ -290,9 +346,14 @@
                 sidebarOpen: false,
                 isModalOpen: false,
                 isFilialModalOpen: false,
+                isDeleteModalOpen: false,
                 formData: { permissions: [] }, 
                 filialFormData: {},
                 currentUser: { id: 1, role: 'Administrador' }, // Simulating logged-in user
+                popup: { show: false, message: '', type: 'success' },
+                deleteModalTitle: '',
+                deleteTargetId: null,
+                deleteTargetType: '',
                 roles: [
                     { id: 'Administrador', name: 'Administradores' },
                     { id: 'Profissional de Saúde', name: 'Profissionais de Saúde' },
@@ -301,9 +362,18 @@
                 allPages: ['Dashboard', 'Agenda', 'Pacientes', 'Financeiro', 'Relatórios', 'Marketing', 'Gerência', 'Ajuda', 'Configurações'],
                 users: [],
                 filiais: [],
+
                 init() {
                     this.loadData();
                 },
+                
+                displayPopup(message, type) {
+                    this.popup.message = message;
+                    this.popup.type = type;
+                    this.popup.show = true;
+                    setTimeout(() => this.popup.show = false, 4000);
+                },
+
                 get administrators() {
                     return this.users.filter(user => user.role === 'Administrador');
                 },
@@ -312,6 +382,7 @@
                     const filial = this.filiais.find(f => f.id == filialId); // Use == for type coercion
                     return filial ? filial.name : null;
                 },
+
                 loadData() {
                     this.users = JSON.parse(localStorage.getItem('clinicsoft_users')) || [
                         { id: 1, name: 'Dr. Ricardo Mendes', email: 'ricardo.mendes@email.com', role: 'Administrador', status: 'Ativo', avatar: 'https://placehold.co/80x80/00A99D/FFFFFF?text=R', permissions: ['Dashboard', 'Agenda', 'Pacientes', 'Financeiro', 'Relatórios', 'Marketing', 'Gerência', 'Ajuda', 'Configurações'], filialId: 1 },
@@ -328,6 +399,7 @@
                     localStorage.setItem('clinicsoft_users', JSON.stringify(this.users));
                     localStorage.setItem('clinicsoft_filiais', JSON.stringify(this.filiais));
                 },
+
                 openModal(user = null) {
                     if (user) {
                         this.formData = JSON.parse(JSON.stringify(user)); // Deep copy
@@ -338,22 +410,31 @@
                     this.isModalOpen = true;
                 },
                 saveUser() {
+                    if (!this.formData.name || !this.formData.email) {
+                        this.displayPopup(this.formData.id ? 'Erro ao salvar edições. Tente novamente' : 'Erro ao adicionar membro. Tente novamente', 'error');
+                        return;
+                    }
+
                     if (this.formData.id) { // Editing existing user
                         const index = this.users.findIndex(u => u.id === this.formData.id);
                         if (index !== -1) this.users[index] = this.formData;
+                        this.displayPopup('Edições salvas com sucesso', 'success');
                     } else { // Adding new user
                         this.formData.id = Date.now();
                         this.users.push(this.formData);
+                        this.displayPopup('Membro adicionado com sucesso', 'success');
                     }
                     this.saveData();
                     this.isModalOpen = false;
                 },
-                deleteUser(id) {
-                    if (confirm('Tem certeza que deseja remover este membro da equipe?')) {
-                        this.users = this.users.filter(u => u.id !== id);
-                        this.saveData();
-                    }
+                
+                confirmDeleteUser(id) {
+                    this.deleteModalTitle = 'Tem certeza que deseja remover este membro da equipe?';
+                    this.deleteTargetId = id;
+                    this.deleteTargetType = 'user';
+                    this.isDeleteModalOpen = true;
                 },
+
                 updatePermissionsForRole(role) {
                     if (role === 'Administrador') {
                         this.formData.permissions = [...this.allPages];
@@ -370,6 +451,7 @@
                         this.formData.permissions = [];
                     }
                 },
+
                 openFilialModal(filial = null) {
                     if(filial) {
                         this.filialFormData = JSON.parse(JSON.stringify(filial));
@@ -379,21 +461,40 @@
                     this.isFilialModalOpen = true;
                 },
                 saveFilial() {
+                    if (!this.filialFormData.name || !this.filialFormData.cnpj || !this.filialFormData.address || !this.filialFormData.manager) {
+                        this.displayPopup(this.filialFormData.id ? 'Erro ao salvar edições. Tente novamente' : 'Erro ao adicionar filial. Tente novamente', 'error');
+                        return;
+                    }
                     if (this.filialFormData.id) {
                         const index = this.filiais.findIndex(f => f.id === this.filialFormData.id);
                         if (index !== -1) this.filiais[index] = this.filialFormData;
+                        this.displayPopup('Edições salvas com sucesso', 'success');
                     } else {
                         this.filialFormData.id = Date.now();
                         this.filiais.push(this.filialFormData);
+                        this.displayPopup('Filial adicionada com sucesso', 'success');
                     }
                     this.saveData();
                     this.isFilialModalOpen = false;
                 },
-                deleteFilial(id) {
-                    if (confirm('Tem certeza que deseja excluir esta filial?')) {
-                        this.filiais = this.filiais.filter(f => f.id !== id);
-                        this.saveData();
+
+                confirmDeleteFilial(id) {
+                    this.deleteModalTitle = 'Tem certeza que deseja excluir esta filial?';
+                    this.deleteTargetId = id;
+                    this.deleteTargetType = 'filial';
+                    this.isDeleteModalOpen = true;
+                },
+
+                deleteConfirmed() {
+                    if (this.deleteTargetType === 'user') {
+                        this.users = this.users.filter(u => u.id !== this.deleteTargetId);
+                        this.displayPopup('Membro removido com sucesso', 'success');
+                    } else if (this.deleteTargetType === 'filial') {
+                        this.filiais = this.filiais.filter(f => f.id !== this.deleteTargetId);
+                        this.displayPopup('Filial excluída com sucesso', 'success');
                     }
+                    this.saveData();
+                    this.isDeleteModalOpen = false;
                 }
             }
         }

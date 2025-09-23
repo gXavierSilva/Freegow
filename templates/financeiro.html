@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
+<html lang="pt-BR" x-data :class="{ 'dark': $store.appTheme.darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,6 +60,35 @@
 <body class="bg-gray-100 dark:bg-gray-900">
 
     <div x-data="financePage()" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+        <!-- Pop-up Notification -->
+        <div 
+            x-show="popup.show"
+            x-cloak
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform -translate-y-4"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform -translate-y-4"
+            class="fixed top-5 right-5 w-full max-w-sm rounded-lg shadow-lg"
+            :class="{
+                'bg-green-500': popup.type === 'success',
+                'bg-red-500': popup.type === 'error'
+            }"
+            style="z-index: 100;"
+        >
+            <div class="p-4 flex items-center">
+                <div class="mr-3">
+                    <svg x-show="popup.type === 'success'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg x-show="popup.type === 'error'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-white font-medium" x-text="popup.message"></p>
+                <button @click="popup.show = false" class="ml-auto p-1 text-white rounded-full hover:bg-white/20 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Sidebar -->
         <aside 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -127,9 +156,9 @@
                 </div>
 
                 <div class="flex items-center space-x-4">
-                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
-                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <button @click="$store.appTheme.toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!$store.appTheme.darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="$store.appTheme.darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
                     <button @click="isCompanyModalOpen = true; isEditingCompany = false;" class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300 font-semibold px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-300 flex items-center">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -198,7 +227,7 @@
                                         </div>
                                         <div class="flex space-x-2">
                                             <button @click="openLaunchModal(lot)" class="text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg></button>
-                                            <button @click="deleteLaunch(lot.id)" class="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0015 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg></button>
+                                            <button @click="confirmDeleteLaunch(lot.id)" class="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg></button>
                                         </div>
                                     </div>
                                 </template>
@@ -221,8 +250,8 @@
                                             <button @click="openCompanyEditModal(company)" title="Editar Empresa" class="w-5 h-5 text-gray-500 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400">
                                                 <svg fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
                                             </button>
-                                            <button @click="deleteCompany(company.id)" title="Excluir Empresa" class="w-5 h-5 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500">
-                                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                            <button @click="confirmDeleteCompany(company.id)" title="Excluir Empresa" class="w-5 h-5 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500">
+                                                <svg fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg>
                                             </button>
                                         </div>
                                     </div>
@@ -325,8 +354,8 @@
                                         <p class="text-sm text-gray-600 dark:text-gray-400" x-text="`${formatCurrency(lot.amount)} - ${lot.status}`"></p>
                                     </div>
                                     <div class="flex space-x-2">
-                                        <button @click="openLaunchModal(lot)" class="text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg></button>
-                                        <button @click="deleteLaunch(lot.id)" class="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0015 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg></button>
+                                        <button @click="openLaunchModal(lot); isLotsModalOpen = false;" class="text-gray-500 hover:text-teal-600 dark:text-gray-400 dark:hover:text-teal-400"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg></button>
+                                        <button @click="confirmDeleteLaunch(lot.id); isLotsModalOpen = false;" class="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-500"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd"></path></svg></button>
                                     </div>
                                 </div>
                             </template>
@@ -338,18 +367,45 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Delete Confirmation Modals -->
+        <div x-show="isDeleteModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex items-center justify-center min-h-screen">
+                <div @click="isDeleteModalOpen = false" class="fixed inset-0 bg-gray-500 dark:bg-black bg-opacity-75 dark:bg-opacity-50"></div>
+                <div class="bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
+                    <div class="bg-white dark:bg-gray-800 p-6">
+                        <div class="sm:flex sm:items-start">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/50 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg font-medium text-gray-900 dark:text-white" x-text="deleteModalTitle"></h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Esta ação não pode ser desfeita.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 dark:bg-gray-900 px-6 py-3 flex justify-end space-x-3">
+                         <button @click="isDeleteModalOpen = false" type="button" class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">Cancelar</button>
+                        <button @click="deleteConfirmed()" type="button" class="bg-red-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-red-700">Excluir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     
     <script>
-        // Alpine.js component for theme management
+        // Alpine store for global theme state
         document.addEventListener('alpine:init', () => {
-            Alpine.data('appTheme', () => ({
+            Alpine.store('appTheme', {
                 darkMode: localStorage.getItem('darkMode') === 'true',
                 toggleDarkMode() {
                     this.darkMode = !this.darkMode;
                     localStorage.setItem('darkMode', this.darkMode);
                 }
-            }))
+            });
         });
 
         function financePage() {
@@ -358,12 +414,17 @@
                 isLaunchModalOpen: false,
                 isCompanyModalOpen: false,
                 isLotsModalOpen: false,
+                isDeleteModalOpen: false,
                 isEditingCompany: false,
                 lancamentos: [],
                 companies: [],
                 formData: {},
                 companyFormData: { name: '', plan: '', priceTable: [{ exam: '', price: '' }] },
                 financeChart: null,
+                popup: { show: false, message: '', type: 'success' },
+                deleteModalTitle: '',
+                deleteTargetId: null,
+                deleteTargetType: '',
 
                 init() {
                     this.loadData();
@@ -373,6 +434,14 @@
                         this.initChart(this.$refs.financeChartCanvas, newValue);
                     });
                 },
+
+                displayPopup(message, type) {
+                    this.popup.message = message;
+                    this.popup.type = type;
+                    this.popup.show = true;
+                    setTimeout(() => this.popup.show = false, 4000);
+                },
+
                 get tissLots() {
                     return this.lancamentos.filter(l => l.convenio).slice(0, 3);
                 },
@@ -388,6 +457,7 @@
                 get accountsReceivable() {
                     return this.lancamentos.filter(l => l.type === 'receita' && l.status !== 'Recebido').reduce((sum, l) => sum + parseFloat(l.amount || 0), 0);
                 },
+
                 loadData() {
                     this.lancamentos = JSON.parse(localStorage.getItem('clinicsoft_lancamentos')) || [
                         { id: 1, date: '2025-07-02', description: 'Consulta - Ana Clara Silva', amount: 250, type: 'receita', status: 'Recebido', convenio: 'Unimed' },
@@ -404,6 +474,7 @@
                     localStorage.setItem('clinicsoft_lancamentos', JSON.stringify(this.lancamentos));
                     localStorage.setItem('clinicsoft_companies', JSON.stringify(this.companies));
                 },
+
                 openLaunchModal(lancamento = null) {
                     if (lancamento) {
                         this.formData = JSON.parse(JSON.stringify(lancamento)); // Deep copy
@@ -413,22 +484,30 @@
                     this.isLaunchModalOpen = true;
                 },
                 saveLaunch() {
+                    if (!this.formData.description || !this.formData.amount) {
+                         this.displayPopup(this.formData.id ? 'Erro ao editar lançamento. Tente novamente' : 'Erro ao realizar lançamento. Tente novamente', 'error');
+                        return;
+                    }
                     if (this.formData.id) {
                         const index = this.lancamentos.findIndex(l => l.id === this.formData.id);
                         if (index !== -1) this.lancamentos[index] = this.formData;
+                        this.displayPopup('Lançamento editado com sucesso', 'success');
                     } else {
                         this.formData.id = Date.now();
                         this.lancamentos.unshift(this.formData);
+                        this.displayPopup('Lançamento realizado com sucesso', 'success');
                     }
                     this.saveData();
                     this.isLaunchModalOpen = false;
                 },
-                deleteLaunch(id) {
-                    if (confirm('Tem certeza que deseja excluir este lançamento?')) {
-                        this.lancamentos = this.lancamentos.filter(l => l.id !== id);
-                        this.saveData();
-                    }
+                
+                confirmDeleteLaunch(id) {
+                    this.deleteModalTitle = 'Excluir Lançamento?';
+                    this.deleteTargetId = id;
+                    this.deleteTargetType = 'launch';
+                    this.isDeleteModalOpen = true;
                 },
+
                 openCompanyModal() {
                     this.isEditingCompany = false;
                     this.companyFormData = { name: '', plan: '', priceTable: [{ exam: '', price: '' }] };
@@ -440,28 +519,53 @@
                     this.isCompanyModalOpen = true;
                 },
                 addCompany() {
+                    if (!this.companyFormData.name || !this.companyFormData.plan) {
+                        this.displayPopup('Erro ao cadastrar empresa. Tente novamente', 'error');
+                        return;
+                    }
                     this.companies.push({ id: Date.now(), ...this.companyFormData });
                     this.saveData();
                     this.isCompanyModalOpen = false;
+                    this.displayPopup('Empresa cadastrada com sucesso', 'success');
                 },
                 updateCompany() {
+                    if (!this.companyFormData.name || !this.companyFormData.plan) {
+                        this.displayPopup('Erro ao editar empresa. Tente novamente', 'error');
+                        return;
+                    }
                     const index = this.companies.findIndex(c => c.id === this.companyFormData.id);
                     if (index !== -1) this.companies[index] = this.companyFormData;
                     this.saveData();
                     this.isCompanyModalOpen = false;
+                    this.displayPopup('Empresa editada com sucesso', 'success');
                 },
-                deleteCompany(id) {
-                    if (confirm('Tem a certeza que deseja excluir esta empresa?')) {
-                        this.companies = this.companies.filter(c => c.id !== id);
-                        this.saveData();
+
+                confirmDeleteCompany(id) {
+                    this.deleteModalTitle = 'Excluir Empresa?';
+                    this.deleteTargetId = id;
+                    this.deleteTargetType = 'company';
+                    this.isDeleteModalOpen = true;
+                },
+
+                deleteConfirmed() {
+                    if (this.deleteTargetType === 'launch') {
+                        this.lancamentos = this.lancamentos.filter(l => l.id !== this.deleteTargetId);
+                        this.displayPopup('Lançamento excluído com sucesso', 'success');
+                    } else if (this.deleteTargetType === 'company') {
+                        this.companies = this.companies.filter(c => c.id !== this.deleteTargetId);
+                        this.displayPopup('Empresa excluída com sucesso', 'success');
                     }
+                    this.saveData();
+                    this.isDeleteModalOpen = false;
                 },
+
                 addPriceRow() {
                     this.companyFormData.priceTable.push({ exam: '', price: '' });
                 },
                 removePriceRow(index) {
                     this.companyFormData.priceTable.splice(index, 1);
                 },
+
                 formatCurrency(value) {
                     if (isNaN(parseFloat(value))) return 'R$ 0,00';
                     return parseFloat(value).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -501,17 +605,6 @@
                 }
             }
         }
-
-        // Alpine store for global theme state
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('appTheme', {
-                darkMode: localStorage.getItem('darkMode') === 'true',
-                toggleDarkMode() {
-                    this.darkMode = !this.darkMode;
-                    localStorage.setItem('darkMode', this.darkMode);
-                }
-            })
-        });
     </script>
 </body>
 </html>

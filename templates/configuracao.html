@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" x-data="appTheme" :class="{ 'dark': darkMode }">
+<html lang="pt-BR" x-data :class="{ 'dark': $store.appTheme.darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -56,7 +56,36 @@
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
 
-    <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div x-data="settingsPage()" class="flex h-screen bg-gray-100 dark:bg-gray-900">
+        <!-- Pop-up Notification -->
+        <div 
+            x-show="popup.show"
+            x-cloak
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 transform -translate-y-4"
+            x-transition:enter-end="opacity-100 transform translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 transform translate-y-0"
+            x-transition:leave-end="opacity-0 transform -translate-y-4"
+            class="fixed top-5 right-5 w-full max-w-sm rounded-lg shadow-lg"
+            :class="{
+                'bg-green-500': popup.type === 'success',
+                'bg-red-500': popup.type === 'error'
+            }"
+            style="z-index: 100;"
+        >
+            <div class="p-4 flex items-center">
+                <div class="mr-3">
+                    <svg x-show="popup.type === 'success'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <svg x-show="popup.type === 'error'" class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <p class="text-white font-medium" x-text="popup.message"></p>
+                <button @click="popup.show = false" class="ml-auto p-1 text-white rounded-full hover:bg-white/20 focus:outline-none">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+        </div>
+
         <!-- Sidebar -->
         <aside 
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
@@ -124,9 +153,9 @@
                 </div>
                  <div class="flex items-center space-x-4">
                     <!-- Theme Toggle Button -->
-                    <button @click="toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
-                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    <button @click="$store.appTheme.toggleDarkMode()" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                        <svg x-show="!$store.appTheme.darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg x-show="$store.appTheme.darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
                     </button>
                 </div>
             </header>
@@ -153,7 +182,7 @@
                     <div x-show="tab === 'perfil'" x-cloak>
                         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                             <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-6">Informações do Perfil</h3>
-                            <form class="space-y-6">
+                            <form @submit.prevent="saveSettings()" class="space-y-6">
                                 <div x-data="{ photoPreview: 'https://placehold.co/96x96/00A99D/FFFFFF?text=R' }">
                                     <div class="flex items-center space-x-6">
                                         <img class="w-24 h-24 rounded-full object-cover" :src="photoPreview" alt="User avatar">
@@ -208,7 +237,7 @@
                     <div x-show="tab === 'clinica'" x-cloak>
                         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                              <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-6">Dados da Clínica</h3>
-                             <form class="space-y-6">
+                             <form @submit.prevent="saveSettings()" class="space-y-6">
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
                                         <label for="clinic-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nome da Clínica</label>
@@ -244,13 +273,13 @@
                     <div x-show="tab === 'notificacoes'" x-cloak>
                         <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
                              <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-6">Preferências de Notificação</h3>
-                             <div class="space-y-6" x-data="{ emailAlerts: true, whatsappAlerts: true, dailySummary: false }">
+                             <div class="space-y-6" x-data="{ emailAlerts: true, whatsappAlerts: true, dailySummary: false, save: () => {} }">
                                 <div class="flex items-center justify-between p-4 border dark:border-gray-700 rounded-md">
                                     <div>
                                         <h4 class="font-semibold text-gray-800 dark:text-gray-200">Lembretes de Consulta por E-mail</h4>
                                         <p class="text-sm text-gray-500 dark:text-gray-400">Enviar e-mails para pacientes para confirmar e lembrar de agendamentos.</p>
                                     </div>
-                                    <button @click="emailAlerts = !emailAlerts" type="button" :class="{'bg-teal-500': emailAlerts, 'bg-gray-200 dark:bg-gray-600': !emailAlerts}" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 focus:ring-teal-500" role="switch" :aria-checked="emailAlerts">
+                                    <button @click="emailAlerts = !emailAlerts; $nextTick(() => saveSettings())" type="button" :class="{'bg-teal-500': emailAlerts, 'bg-gray-200 dark:bg-gray-600': !emailAlerts}" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 focus:ring-teal-500" role="switch" :aria-checked="emailAlerts">
                                         <span :class="{'translate-x-5': emailAlerts, 'translate-x-0': !emailAlerts}" class="inline-block w-5 h-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"></span>
                                     </button>
                                 </div>
@@ -259,7 +288,7 @@
                                         <h4 class="font-semibold text-gray-800 dark:text-gray-200">Lembretes de Consulta por WhatsApp</h4>
                                         <p class="text-sm text-gray-500 dark:text-gray-400">Enviar mensagens via WhatsApp para pacientes para confirmar agendamentos.</p>
                                     </div>
-                                     <button @click="whatsappAlerts = !whatsappAlerts" type="button" :class="{'bg-teal-500': whatsappAlerts, 'bg-gray-200 dark:bg-gray-600': !whatsappAlerts}" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 focus:ring-teal-500" role="switch" :aria-checked="whatsappAlerts">
+                                     <button @click="whatsappAlerts = !whatsappAlerts; $nextTick(() => saveSettings())" type="button" :class="{'bg-teal-500': whatsappAlerts, 'bg-gray-200 dark:bg-gray-600': !whatsappAlerts}" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 focus:ring-teal-500" role="switch" :aria-checked="whatsappAlerts">
                                         <span :class="{'translate-x-5': whatsappAlerts, 'translate-x-0': !whatsappAlerts}" class="inline-block w-5 h-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"></span>
                                     </button>
                                 </div>
@@ -268,7 +297,7 @@
                                         <h4 class="font-semibold text-gray-800 dark:text-gray-200">Resumo Diário por E-mail</h4>
                                         <p class="text-sm text-gray-500 dark:text-gray-400">Receber um e-mail diário com o resumo da sua agenda e tarefas.</p>
                                     </div>
-                                     <button @click="dailySummary = !dailySummary" type="button" :class="{'bg-teal-500': dailySummary, 'bg-gray-200 dark:bg-gray-600': !dailySummary}" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 focus:ring-teal-500" role="switch" :aria-checked="dailySummary">
+                                     <button @click="dailySummary = !dailySummary; $nextTick(() => saveSettings())" type="button" :class="{'bg-teal-500': dailySummary, 'bg-gray-200 dark:bg-gray-600': !dailySummary}" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-800 focus:ring-teal-500" role="switch" :aria-checked="dailySummary">
                                         <span :class="{'translate-x-5': dailySummary, 'translate-x-0': !dailySummary}" class="inline-block w-5 h-5 bg-white rounded-full shadow transform ring-0 transition ease-in-out duration-200"></span>
                                     </button>
                                 </div>
@@ -280,16 +309,41 @@
         </div>
     </div>
     <script>
-        // Alpine.js component for theme management
+        // Alpine store for global theme state
         document.addEventListener('alpine:init', () => {
-            Alpine.data('appTheme', () => ({
+            Alpine.store('appTheme', {
                 darkMode: localStorage.getItem('darkMode') === 'true',
                 toggleDarkMode() {
                     this.darkMode = !this.darkMode;
                     localStorage.setItem('darkMode', this.darkMode);
                 }
-            }))
+            });
         });
+
+        function settingsPage() {
+            return {
+                sidebarOpen: false,
+                popup: { show: false, message: '', type: 'success' },
+
+                displayPopup(message, type) {
+                    this.popup.message = message;
+                    this.popup.type = type;
+                    this.popup.show = true;
+                    setTimeout(() => this.popup.show = false, 4000);
+                },
+
+                saveSettings() {
+                    // Simulate a random success or failure
+                    const success = Math.random() > 0.2; // 80% chance of success
+                    
+                    if (success) {
+                        this.displayPopup('Alterações salvas com sucesso', 'success');
+                    } else {
+                        this.displayPopup('Erro ao salvar alterações. Tente novamente', 'error');
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
