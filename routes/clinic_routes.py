@@ -153,9 +153,9 @@ def delete_clinics(clinic_id):
         cur = conn.cursor()
 
         cur.execute("SELECT clinic_id FROM clinics WHERE clinic_id = %s", (clinic_id,))
-        companie = cur.fetchone()
+        clinic = cur.fetchone()
 
-        if companie is None:
+        if clinic is None:
             return jsonify({"error": "Clinica não encontrada."}), 404
         
         cur.execute("DELETE FROM clinics WHERE clinic_id = %s", (clinic_id,))
